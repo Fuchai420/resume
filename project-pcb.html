@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PCB 方案商务交付 — 黄苑</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Outfit:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .page-hero { min-height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 120px 32px 60px; position: relative; }
+    .page-hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(6,182,212,0.06), transparent 70%); pointer-events: none; }
+    .page-hero h1 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 8px; }
+    .page-hero .period { font-family: var(--font-mono); font-size: 0.875rem; color: var(--color-text-tertiary); }
+    .page-hero .role { font-size: 1.1rem; color: var(--color-accent); font-weight: 300; margin-top: 8px; }
+    .page-content { max-width: 960px; margin: 0 auto; padding: 0 32px 100px; }
+    .page-content h2 { font-size: 1.3rem; color: var(--color-accent); margin: 48px 0 20px; font-family: var(--font-body); font-weight: 500; }
+    .page-content p, .page-content li { color: var(--color-text-secondary); line-height: 1.9; font-size: 0.95rem; }
+    .page-content ul { list-style: none; padding: 0; }
+    .page-content ul li { padding: 8px 0 8px 24px; position: relative; }
+    .page-content ul li::before { content: '◆'; position: absolute; left: 0; color: var(--color-accent-dark); font-size: 0.5rem; top: 14px; }
+    .back-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 56px; display: flex; align-items: center; padding: 0 32px; background: rgba(0,0,0,0.85); backdrop-filter: blur(40px); border-bottom: 1px solid var(--color-border); }
+    .back-nav a { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; color: var(--color-text-secondary); transition: color var(--transition-fast); }
+    .back-nav a:hover { color: var(--color-accent); }
+    @media (max-width: 768px) { .page-content { padding: 0 20px 80px; } }
+
+    /* ============================
+       Process Flow — 商务交付流程
+    ============================ */
+    .flow-section {
+      padding: 60px 0 40px;
+      position: relative;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      position: relative;
+    }
+
+    .flow-card {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      position: relative;
+      transition: all 0.5s var(--ease-out);
+      opacity: 0;
+      transform: translateY(30px);
+      overflow: hidden;
+    }
+
+    .flow-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(6,182,212,0.03), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.5s var(--ease-out);
+    }
+
+    .flow-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .flow-card.visible::before {
+      opacity: 1;
+    }
+
+    .flow-card:hover {
+      border-color: rgba(6,182,212,0.2);
+      transform: translateY(-4px);
+    }
+
+    .flow-card:hover::before {
+      opacity: 1;
+    }
+
+    .flow-card:nth-child(odd) {
+      transform: translateX(-20px) translateY(30px);
+    }
+    .flow-card:nth-child(odd).visible {
+      transform: translateX(0) translateY(0);
+    }
+    .flow-card:nth-child(even) {
+      transform: translateX(20px) translateY(30px);
+    }
+    .flow-card:nth-child(even).visible {
+      transform: translateX(0) translateY(0);
+    }
+
+    /* Stagger delays */
+    .flow-card:nth-child(1) { transition-delay: 0s; }
+    .flow-card:nth-child(2) { transition-delay: 0.1s; }
+    .flow-card:nth-child(3) { transition-delay: 0.2s; }
+    .flow-card:nth-child(4) { transition-delay: 0.3s; }
+    .flow-card:nth-child(5) { transition-delay: 0.4s; }
+    .flow-card:nth-child(6) { transition-delay: 0.5s; }
+
+    .flow-card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .flow-card-icon.ic-1 { background: rgba(6,182,212,0.1); color: var(--color-accent); }
+    .flow-card-icon.ic-2 { background: rgba(52,152,219,0.1); color: #3498db; }
+    .flow-card-icon.ic-3 { background: rgba(46,204,113,0.1); color: #2ecc71; }
+    .flow-card-icon.ic-4 { background: rgba(155,89,182,0.1); color: #9b59b6; }
+    .flow-card-icon.ic-5 { background: rgba(230,126,34,0.1); color: #e67e22; }
+    .flow-card-icon.ic-6 { background: rgba(231,76,60,0.1); color: #e74c3c; }
+
+    .flow-card-step {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--color-text-muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .flow-card h3 {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      color: var(--color-text);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .flow-card p {
+      font-size: 0.875rem;
+      color: var(--color-text-tertiary);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* Connecting line */
+    .flow-connector {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--color-accent-dark), var(--color-border), transparent);
+      opacity: 0.3;
+    }
+
+    /* Stats row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 60px 0;
+    }
+
+    .stat-box {
+      background: var(--color-bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 24px 16px;
+      text-align: center;
+      transition: border-color var(--transition-fast), transform var(--transition-fast);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .stat-box.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stat-box:nth-child(1) { transition-delay: 0s; }
+    .stat-box:nth-child(2) { transition-delay: 0.1s; }
+    .stat-box:nth-child(3) { transition-delay: 0.2s; }
+    .stat-box:nth-child(4) { transition-delay: 0.3s; }
+
+    .stat-box:hover {
+      border-color: rgba(6,182,212,0.15);
+      transform: translateY(-2px);
+    }
+
+    .stat-box .num {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--color-accent);
+      font-family: var(--font-display);
+      letter-spacing: -0.03em;
+    }
+
+    .stat-box .lbl {
+      font-size: 0.75rem;
+      color: var(--color-text-tertiary);
+      margin-top: 6px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+    }
+
+    .detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 60px; }
+    .detail-card { background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 14px; padding: 28px 24px; text-align: center; transition: border-color var(--transition-fast), transform var(--transition-fast); }
+    .detail-card:hover { border-color: rgba(6,182,212,0.15); transform: translateY(-2px); }
+    .detail-card i { font-size: 1.6rem; color: var(--color-accent); margin-bottom: 16px; opacity: 0.7; }
+    .detail-card h3 { font-size: 0.95rem; color: var(--color-text); margin-bottom: 8px; font-weight: 500; }
+    .detail-card p { font-size: 0.8125rem; color: var(--color-text-tertiary); line-height: 1.7; }
+
+    @media (max-width: 768px) {
+      .flow-grid { grid-template-columns: 1fr; gap: 16px; }
+      .flow-connector { display: none; }
+      .flow-card:nth-child(odd) { transform: translateY(30px); }
+      .flow-card:nth-child(odd).visible { transform: translateY(0); }
+      .flow-card:nth-child(even) { transform: translateY(30px); }
+      .flow-card:nth-child(even).visible { transform: translateY(0); }
+      .stats-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="theme-teal">
+  <nav class="back-nav"><a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> 返回</a></nav>
+
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div>
+      <h1>PCB 方案商务交付</h1>
+      <p class="role">深圳市跃冠科技有限公司 · 商务对接 / 现场工程师</p>
+      <p class="period">2021 — 2022</p>
+    </div>
+  </section>
+
+  <div class="page-content">
+    <!-- Stats -->
+    <div class="stats-row" id="statsRow">
+      <div class="stat-box" id="stat1"><div class="num">20+</div><div class="lbl">服务客户</div></div>
+      <div class="stat-box" id="stat2"><div class="num">98%</div><div class="lbl">交付合格率</div></div>
+      <div class="stat-box" id="stat3"><div class="num">50+</div><div class="lbl">交付项目</div></div>
+      <div class="stat-box" id="stat4"><div class="num">0</div><div class="lbl">重大客诉</div></div>
+    </div>
+
+    <!-- Process Flow -->
+    <h2>商务交付全流程</h2>
+    <div class="flow-section">
+      <div class="flow-connector"></div>
+      <div class="flow-grid" id="flowGrid">
+        <div class="flow-card" id="fc1">
+          <div class="flow-card-icon ic-1"><i class="fas fa-handshake"></i></div>
+          <div class="flow-card-step">STEP 01</div>
+          <h3>客户对接 · 需求确认</h3>
+          <p>独立负责甲方客户的现场业务对接，深入了解项目需求与技术规格，确认 PCB 方案参数与交付标准。</p>
+        </div>
+        <div class="flow-card" id="fc2">
+          <div class="flow-card-icon ic-2"><i class="fas fa-file-signature"></i></div>
+          <div class="flow-card-step">STEP 02</div>
+          <h3>方案沟通 · 商务谈判</h3>
+          <p>配合甲方完成现场业务对接与需求确认，协调生产排期与交付节点，保障项目顺利推进。</p>
+        </div>
+        <div class="flow-card" id="fc3">
+          <div class="flow-card-icon ic-3"><i class="fas fa-industry"></i></div>
+          <div class="flow-card-step">STEP 03</div>
+          <h3>排期生产 · 进度管控</h3>
+          <p>协调生产排期与交付节点，跟进 PCB 打样与量产进度，确保各批次按时完成。</p>
+        </div>
+        <div class="flow-card" id="fc4">
+          <div class="flow-card-icon ic-4"><i class="fas fa-box"></i></div>
+          <div class="flow-card-step">STEP 04</div>
+          <h3>质检打包 · 货物调配</h3>
+          <p>严格把控出货品质，完成货物打包整理与调配，安排配送至甲方现场。</p>
+        </div>
+        <div class="flow-card" id="fc5">
+          <div class="flow-card-icon ic-5"><i class="fas fa-truck"></i></div>
+          <div class="flow-card-step">STEP 05</div>
+          <h3>物流配送 · 现场交付</h3>
+          <p>安排物流配送，遇到货物异常时及时前往现场处理调整，保障交付质量与时效。</p>
+        </div>
+        <div class="flow-card" id="fc6">
+          <div class="flow-card-icon ic-6"><i class="fas fa-shield-alt"></i></div>
+          <div class="flow-card-step">STEP 06</div>
+          <h3>售后跟进 · 长期维护</h3>
+          <p>交付完成后持续跟进客户反馈，处理售后问题，维护长期合作关系。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Cards -->
+    <div class="detail-grid">
+      <div class="detail-card"><i class="fas fa-handshake"></i><h3>商务对接</h3><p>独立负责甲方客户现场对接与需求确认，沟通方案细节，协调商务条款与合同签订。</p></div>
+      <div class="detail-card"><i class="fas fa-truck"></i><h3>物流配送</h3><p>负责货物打包整理与配送安排，确保准时送达甲方现场，异常情况及时响应处理。</p></div>
+      <div class="detail-card"><i class="fas fa-shield"></i><h3>品质保障</h3><p>严格把控交付质量，遇到货物异常及时前往现场处理，保障客户满意度与长期合作。</p></div>
+    </div>
+
+    <h2>关键技能</h2>
+    <div class="about-tags" style="margin-top:0">
+      <span class="tag">业务对接</span><span class="tag">客户对接</span><span class="tag">物流配送</span><span class="tag">现场处理</span><span class="tag">货物调配</span><span class="tag">售后跟进</span>
+    </div>
+  </div>
+
+  <footer class="footer"><div class="container"><p>&copy; 2026 黄苑. All rights reserved.</p></div></footer>
+
+  <script>
+  (function() {
+    'use strict';
+
+    const cards = document.querySelectorAll('.flow-card');
+    const stats = document.querySelectorAll('.stat-box');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    cards.forEach(c => observer.observe(c));
+    stats.forEach(s => observer.observe(s));
+  })();
+  </script>
+</body>
+</html>

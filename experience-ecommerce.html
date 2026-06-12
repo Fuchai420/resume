@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电商运营 · 全栈 — 黄苑</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Outfit:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .page-hero { min-height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 120px 32px 60px; position: relative; }
+    .page-hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(6,182,212,0.06), transparent 70%); pointer-events: none; }
+    .page-hero h1 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 8px; }
+    .page-hero .period { font-family: var(--font-mono); font-size: 0.875rem; color: var(--color-text-tertiary); }
+    .page-hero .role { font-size: 1.1rem; color: var(--color-accent); font-weight: 300; margin-top: 8px; }
+    .page-content { max-width: 720px; margin: 0 auto; padding: 0 32px 100px; }
+    .page-content h2 { font-size: 1.3rem; color: var(--color-accent); margin: 48px 0 20px; font-family: var(--font-body); font-weight: 500; }
+    .page-content p, .page-content li { color: var(--color-text-secondary); line-height: 1.9; font-size: 0.95rem; }
+    .page-content ul { list-style: none; padding: 0; }
+    .page-content ul li { padding: 8px 0 8px 24px; position: relative; }
+    .page-content ul li::before { content: '◆'; position: absolute; left: 0; color: var(--color-accent-dark); font-size: 0.5rem; top: 14px; }
+    .back-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 56px; display: flex; align-items: center; padding: 0 32px; background: rgba(0,0,0,0.85); backdrop-filter: blur(40px); border-bottom: 1px solid var(--color-border); }
+    .back-nav a { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; color: var(--color-text-secondary); transition: color var(--transition-fast); }
+    .back-nav a:hover { color: var(--color-accent); }
+    @media (max-width: 768px) { .page-content { padding: 0 20px 80px; } }
+  </style>
+</head>
+<body class="theme-teal">
+  <nav class="back-nav">
+    <a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> 返回</a>
+  </nav>
+
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div>
+      <h1>电商运营</h1>
+      <p class="role">全栈电商运营</p>
+      <p class="period">2023 — 2026</p>
+    </div>
+  </section>
+
+  <div class="page-content">
+    <h2>工作内容</h2>
+    <ul>
+      <li>在淘宝、拼多多平台独立运营电商店铺，负责上架、主图详情优化</li>
+      <li>推广投放（阿里妈妈/全站推广等）及日常客服发货等全流程</li>
+      <li>素材剪辑与制作，商品主图、详情页持续优化</li>
+      <li>熟悉国内电商平台运营逻辑与推广工具使用，具备从内容到转化的完整实操经验</li>
+    </ul>
+
+    <h2>核心成果</h2>
+    <p>从 0 到 1 独立操盘电商店铺，做到一人独立撑起店铺运营。从素材制作、投流推广到售后服务，全链路闭环操作。能够通过数据反馈调整运营策略，持续提升店铺转化率和用户满意度。</p>
+
+    <h2>关键技能</h2>
+    <div class="about-tags" style="margin-top:0">
+      <span class="tag">商品上架</span>
+      <span class="tag">视频剪辑</span>
+      <span class="tag">推广投放</span>
+      <span class="tag">客服售后</span>
+      <span class="tag">数据复盘</span>
+    </div>
+  </div>
+
+  <footer class="footer"><div class="container"><p>&copy; 2026 黄苑. All rights reserved.</p></div></footer>
+</body>
+</html>

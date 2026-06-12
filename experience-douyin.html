@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>抖音 · 新媒体 — 黄苑</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Outfit:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .page-hero { min-height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 120px 32px 60px; position: relative; }
+    .page-hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(6,182,212,0.06), transparent 70%); pointer-events: none; }
+    .page-hero h1 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 8px; }
+    .page-hero .period { font-family: var(--font-mono); font-size: 0.875rem; color: var(--color-text-tertiary); }
+    .page-hero .role { font-size: 1.1rem; color: var(--color-accent); font-weight: 300; margin-top: 8px; }
+    .page-content { max-width: 720px; margin: 0 auto; padding: 0 32px 100px; }
+    .page-content h2 { font-size: 1.3rem; color: var(--color-accent); margin: 48px 0 20px; font-family: var(--font-body); font-weight: 500; }
+    .page-content p, .page-content li { color: var(--color-text-secondary); line-height: 1.9; font-size: 0.95rem; }
+    .page-content ul { list-style: none; padding: 0; }
+    .page-content ul li { padding: 8px 0 8px 24px; position: relative; }
+    .page-content ul li::before { content: '◆'; position: absolute; left: 0; color: var(--color-accent-dark); font-size: 0.5rem; top: 14px; }
+    .back-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 56px; display: flex; align-items: center; padding: 0 32px; background: rgba(0,0,0,0.85); backdrop-filter: blur(40px); border-bottom: 1px solid var(--color-border); }
+    .back-nav a { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; color: var(--color-text-secondary); transition: color var(--transition-fast); }
+    .back-nav a:hover { color: var(--color-accent); }
+    @media (max-width: 768px) { .page-content { padding: 0 20px 80px; } }
+  </style>
+</head>
+<body class="theme-teal">
+  <nav class="back-nav">
+    <a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> 返回</a>
+  </nav>
+
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div>
+      <h1>抖音 / 新媒体</h1>
+      <p class="role">抖音短视频运营</p>
+      <p class="period">2019 — 2020</p>
+    </div>
+  </section>
+
+  <div class="page-content">
+    <h2>工作内容</h2>
+    <ul>
+      <li>独立负责抖音账号日常运营，制定内容发布排期与 DOU+ 投放策略</li>
+      <li>主要变现方式为引流至私域社群及第三方平台转化</li>
+      <li>依据完播率、互动率等数据反馈调整内容方向与发布节奏</li>
+      <li>负责素材的整理筛选与发布统筹，确保内容稳定输出</li>
+    </ul>
+
+    <h2>核心成果</h2>
+    <p>掌握了短视频内容运营的完整方法论，从素材剪辑、内容策划到投流放大、数据复盘的全流程经验。能够根据算法反馈调整内容策略，具备独立产出爆款内容的能力。</p>
+
+    <h2>关键技能</h2>
+    <div class="about-tags" style="margin-top:0">
+      <span class="tag">视频剪辑</span>
+      <span class="tag">内容策划</span>
+      <span class="tag">DOU+投放</span>
+      <span class="tag">数据分析</span>
+      <span class="tag">账号运营</span>
+      <span class="tag">私域引流</span>
+    </div>
+  </div>
+
+  <footer class="footer"><div class="container"><p>&copy; 2026 黄苑. All rights reserved.</p></div></footer>
+</body>
+</html>

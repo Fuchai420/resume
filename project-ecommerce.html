@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电商店铺全盘运营 — 黄苑</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Outfit:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .page-hero { min-height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 120px 32px 60px; position: relative; }
+    .page-hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(6,182,212,0.06), transparent 70%); pointer-events: none; }
+    .page-hero h1 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 8px; }
+    .page-hero .period { font-family: var(--font-mono); font-size: 0.875rem; color: var(--color-text-tertiary); }
+    .page-hero .role { font-size: 1.1rem; color: var(--color-accent); font-weight: 300; margin-top: 8px; }
+    .page-content { max-width: 960px; margin: 0 auto; padding: 0 32px 100px; }
+    .page-content h2 { font-size: 1.3rem; color: var(--color-accent); margin: 48px 0 20px; font-family: var(--font-body); font-weight: 500; }
+    .page-content p, .page-content li { color: var(--color-text-secondary); line-height: 1.9; font-size: 0.95rem; }
+    .page-content ul { list-style: none; padding: 0; }
+    .page-content ul li { padding: 8px 0 8px 24px; position: relative; }
+    .page-content ul li::before { content: '◆'; position: absolute; left: 0; color: var(--color-accent-dark); font-size: 0.5rem; top: 14px; }
+    .back-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 56px; display: flex; align-items: center; padding: 0 32px; background: rgba(0,0,0,0.85); backdrop-filter: blur(40px); border-bottom: 1px solid var(--color-border); }
+    .back-nav a { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; color: var(--color-text-secondary); transition: color var(--transition-fast); }
+    .back-nav a:hover { color: var(--color-accent); }
+    @media (max-width: 768px) { .page-content { padding: 0 20px 80px; } }
+
+    /* ============================
+       Scroll Gallery — 3D Phone Showcase
+    ============================ */
+    .phone-gallery {
+      position: relative;
+      min-height: 120vh;
+      margin: 40px -32px 60px;
+      padding: 80px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      perspective: 1200px;
+    }
+
+    .phone-gallery-inner {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+    }
+
+    /* ---- Phone Frame ---- */
+    .phone-3d {
+      position: absolute;
+      width: 230px;
+      height: 470px;
+      background: #1a1a1e;
+      border-radius: 32px;
+      padding: 8px;
+      box-shadow: 0 0 0 2px #2a2a2e, 0 30px 80px rgba(0,0,0,0.7), 0 0 100px rgba(6,182,212,0.03);
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: box-shadow 0.4s var(--ease-out);
+    }
+
+    .phone-3d:hover {
+      box-shadow: 0 0 0 2px rgba(6,182,212,0.25), 0 40px 100px rgba(0,0,0,0.8), 0 0 120px rgba(6,182,212,0.06);
+    }
+
+    .phone-3d-notch {
+      position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+      width: 80px; height: 20px; background: #1a1a1e;
+      border-radius: 0 0 12px 12px; z-index: 10;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .phone-3d-notch::before { content: ''; width: 5px; height: 5px; background: #0a0a0c; border-radius: 50%; border: 1px solid #2a2a2e; }
+    .phone-3d-notch::after { content: ''; width: 26px; height: 3px; background: #0a0a0c; border-radius: 2px; border: 1px solid #2a2a2e; }
+
+    .phone-3d-screen {
+      width: 100%; height: 100%; border-radius: 24px; overflow: hidden;
+      position: relative; font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* ==== Phone positions ==== */
+    .phone-3d--left { left: 2%; top: 15%; }
+    .phone-3d--center { left: 50%; top: 50%; transform: translate(-50%,-50%) rotateY(-2deg); z-index: 2; width: 250px; height: 510px; }
+    .phone-3d--right { right: 2%; top: 20%; }
+
+    /* ============================
+       Taobao App Screen (White + Orange)
+    ============================ */
+    .screen-taobao {
+      width: 100%; height: 100%; background: #f5f5f7;
+      display: flex; flex-direction: column; position: relative;
+    }
+    .screen-taobao .tb-status { height: 28px; background: #ff6a00; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 8px; color: #fff; font-weight: 600; }
+    .screen-taobao .tb-header { background: linear-gradient(180deg,#ff6a00,#ff8c1a); padding: 8px 12px 14px; }
+    .screen-taobao .tb-search { background: rgba(255,255,255,0.9); border-radius: 16px; padding: 6px 12px; font-size: 9px; color: #999; display: flex; align-items: center; gap: 6px; }
+    .screen-taobao .tb-search i { color: #ff6a00; font-size: 8px; }
+    .screen-taobao .tb-categories { display: flex; gap: 4px; padding: 8px 10px 0; }
+    .screen-taobao .tb-cat { flex:1; text-align: center; font-size: 7px; color: #666; padding: 4px 0; background: rgba(255,255,255,0.6); border-radius: 4px; }
+    .screen-taobao .tb-banner { height: 44px; margin: 6px 10px; border-radius: 6px; background: linear-gradient(135deg,#ffdbb8,#ffb87a); display: flex; align-items: center; justify-content: center; font-size: 8px; color: #a84f00; font-weight: 600; }
+    .screen-taobao .tb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 0 10px; flex: 1; }
+    .screen-taobao .tb-item { background: #fff; border-radius: 6px; padding: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .screen-taobao .tb-item-img { height: 40px; background: linear-gradient(135deg,#ffdec2,#ffb080); border-radius: 4px; margin-bottom: 4px; }
+    .screen-taobao .tb-item-img:nth-child(2) { background: linear-gradient(135deg,#c2e0ff,#80b8ff); }
+    .screen-taobao .tb-item-img:nth-child(3) { background: linear-gradient(135deg,#c2ffd8,#80e8a0); }
+    .screen-taobao .tb-item-img:nth-child(4) { background: linear-gradient(135deg,#ffc2e0,#ff80b0); }
+    .screen-taobao .tb-item-price { font-size: 8px; color: #ff4400; font-weight: 700; }
+    .screen-taobao .tb-item-title { font-size: 6px; color: #333; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .screen-taobao .tb-tabbar { display: flex; background: #fff; border-top: 1px solid #eee; padding: 4px 0; }
+    .screen-taobao .tb-tab { flex:1; text-align: center; font-size: 6px; color: #999; padding: 2px 0; }
+    .screen-taobao .tb-tab i { display: block; font-size: 10px; margin-bottom: 1px; }
+    .screen-taobao .tb-tab.active { color: #ff6a00; }
+
+    /* ============================
+       Pinduoduo App Screen (White + Red)
+    ============================ */
+    .screen-pdd {
+      width: 100%; height: 100%; background: #f5f5f7;
+      display: flex; flex-direction: column; position: relative;
+    }
+    .screen-pdd .pdd-status { height: 28px; background: #c31523; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 8px; color: #fff; font-weight: 600; }
+    .screen-pdd .pdd-header { background: linear-gradient(180deg,#c31523,#e83828); padding: 8px 12px 14px; }
+    .screen-pdd .pdd-search { background: rgba(255,255,255,0.92); border-radius: 16px; padding: 6px 12px; font-size: 9px; color: #999; display: flex; align-items: center; gap: 6px; }
+    .screen-pdd .pdd-search i { color: #c31523; font-size: 8px; }
+    .screen-pdd .pdd-banner { height: 44px; margin: 6px 10px; border-radius: 6px; background: linear-gradient(135deg,#ffcccc,#ff6666); display: flex; align-items: center; justify-content: center; font-size: 8px; color: #fff; font-weight: 700; gap: 4px; }
+    .screen-pdd .pdd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 0 10px; flex:1; }
+    .screen-pdd .pdd-item { background: #fff; border-radius: 6px; padding: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); position: relative; }
+    .screen-pdd .pdd-item-badge { position: absolute; top: 8px; left: 8px; background: #c31523; color: #fff; font-size: 5px; padding: 1px 4px; border-radius: 2px; font-weight: 700; }
+    .screen-pdd .pdd-item-img { height: 40px; border-radius: 4px; margin-bottom: 4px; }
+    .screen-pdd .pdd-item-img:nth-child(2) { background: linear-gradient(135deg,#ffe0cc,#ffaa80); }
+    .screen-pdd .pdd-item-img:nth-child(3) { background: linear-gradient(135deg,#cce0ff,#80b8ff); }
+    .screen-pdd .pdd-item-price { font-size: 8px; color: #c31523; font-weight: 700; }
+    .screen-pdd .pdd-item-price s { font-size: 5px; color: #ccc; font-weight: 400; margin-left: 2px; }
+    .screen-pdd .pdd-item-title { font-size: 6px; color: #333; margin-top: 1px; }
+    .screen-pdd .pdd-tabbar { display: flex; background: #fff; border-top: 1px solid #eee; padding: 4px 0; }
+    .screen-pdd .pdd-tab { flex:1; text-align: center; font-size: 6px; color: #999; padding: 2px 0; }
+    .screen-pdd .pdd-tab i { display: block; font-size: 10px; margin-bottom: 1px; }
+    .screen-pdd .pdd-tab.active { color: #c31523; }
+
+    /* ============================
+       Douyin Shop App Screen (Dark + Teal)
+    ============================ */
+    .screen-dy {
+      width: 100%; height: 100%; background: #111;
+      display: flex; flex-direction: column; position: relative; color: #fff;
+    }
+    .screen-dy .dy-status { height: 28px; background: #000; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 8px; color: #fff; font-weight: 600; }
+    .screen-dy .dy-header { padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; }
+    .screen-dy .dy-logo { font-size: 11px; font-weight: 700; background: linear-gradient(135deg,#00f2fe,#4facfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .screen-dy .dy-actions { display: flex; gap: 10px; font-size: 9px; color: #888; }
+    .screen-dy .dy-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 0 10px; margin-bottom: 6px; }
+    .screen-dy .dy-stat { background: #1a1a2e; border-radius: 6px; padding: 6px 8px; }
+    .screen-dy .dy-stat-val { font-size: 10px; font-weight: 700; color: #00f2fe; }
+    .screen-dy .dy-stat-label { font-size: 5px; color: #666; text-transform: uppercase; letter-spacing: 0.02em; }
+    .screen-dy .dy-feed { display: flex; gap: 4px; padding: 0 10px; flex:1; overflow: hidden; }
+    .screen-dy .dy-feed-item { flex:1; border-radius: 6px; overflow: hidden; position: relative; }
+    .screen-dy .dy-feed-item:nth-child(1) { background: linear-gradient(180deg,#00f2fe,#4facfe); }
+    .screen-dy .dy-feed-item:nth-child(2) { background: linear-gradient(180deg,#fa709a,#fee140); }
+    .screen-dy .dy-feed-item:nth-child(3) { background: linear-gradient(180deg,#a18cd1,#fbc2eb); }
+    .screen-dy .dy-feed-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 6px; background: linear-gradient(transparent,rgba(0,0,0,0.7)); font-size: 6px; }
+    .screen-dy .dy-feed-overlay .price { font-size: 8px; font-weight: 700; color: #ffd700; }
+    .screen-dy .dy-tabbar { display: flex; background: #000; border-top: 1px solid #222; padding: 4px 0; }
+    .screen-dy .dy-tab { flex:1; text-align: center; font-size: 6px; color: #555; padding: 2px 0; }
+    .screen-dy .dy-tab i { display: block; font-size: 10px; margin-bottom: 1px; }
+    .screen-dy .dy-tab.active { color: #00f2fe; }
+
+    /* ---- Gallery Labels ---- */
+    .gallery-labels { display: flex; justify-content: center; gap: 80px; margin-top: -20px; position: relative; z-index: 5; flex-wrap: wrap; }
+    .gallery-label-item { text-align: center; opacity: 0; transition: opacity 0.6s var(--ease-out); }
+    .gallery-label-item.visible { opacity: 1; }
+    .gallery-label-item .platform-tag { display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px; font-size: 0.75rem; color: var(--color-accent); border: 1px solid rgba(6,182,212,0.2); border-radius: 100px; font-family: var(--font-mono); background: rgba(6,182,212,0.04); }
+    .gallery-label-item .sub { font-size: 0.7rem; color: var(--color-text-tertiary); margin-top: 6px; font-family: var(--font-mono); letter-spacing: 0.03em; }
+
+    /* ---- Scroll hint ---- */
+    .scroll-hint-bar { text-align: center; padding: 0 0 40px; font-size: 0.75rem; color: var(--color-text-muted); font-family: var(--font-mono); letter-spacing: 0.15em; opacity: 0.6; transition: opacity 0.6s var(--ease-out); position: relative; z-index: 3; }
+    .scroll-hint-bar i { display: block; margin: 8px auto 0; animation: hintBounce 2s ease-in-out infinite; }
+    @keyframes hintBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+    /* ---- Detail Cards ---- */
+    .detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 60px; }
+    .detail-card { background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 14px; padding: 28px 24px; text-align: center; transition: border-color var(--transition-fast), transform var(--transition-fast); }
+    .detail-card:hover { border-color: rgba(6,182,212,0.15); transform: translateY(-2px); }
+    .detail-card i { font-size: 1.6rem; color: var(--color-accent); margin-bottom: 16px; opacity: 0.7; }
+    .detail-card h3 { font-size: 0.95rem; color: var(--color-text); margin-bottom: 8px; font-weight: 500; }
+    .detail-card p { font-size: 0.8125rem; color: var(--color-text-tertiary); line-height: 1.7; }
+
+    /* ============================
+       Screen Content Animations
+    ============================ */
+    /* Banner cycling */
+    .banner-cycle {
+      animation: bannerFade 4s ease-in-out infinite;
+    }
+    @keyframes bannerFade {
+      0%, 25% { opacity: 1; transform: translateY(0); }
+      30%, 45% { opacity: 0; transform: translateY(-4px); }
+      50%, 75% { opacity: 1; transform: translateY(0); }
+      80%, 95% { opacity: 0; transform: translateY(4px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Pulse badge */
+    .badge-pulse {
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    /* Float item */
+    .item-float {
+      animation: itemFloat 3s ease-in-out infinite;
+    }
+    .item-float:nth-child(2) { animation-delay: 0.5s; }
+    .item-float:nth-child(3) { animation-delay: 1s; }
+    .item-float:nth-child(4) { animation-delay: 1.5s; }
+    @keyframes itemFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    /* Stat count-up */
+    .stat-count {
+      display: inline-block;
+      animation: countPulse 3s ease-in-out infinite;
+    }
+    @keyframes countPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* Feed slide */
+    .feed-slide {
+      animation: feedSlide 5s ease-in-out infinite;
+    }
+    @keyframes feedSlide {
+      0%, 30% { transform: translateY(0); opacity: 1; }
+      35%, 45% { transform: translateY(-20px); opacity: 0; }
+      50%, 80% { transform: translateY(0); opacity: 1; }
+      85%, 95% { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Glow shimmer on product images */
+    .img-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+    .img-shimmer::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transform: translateX(-100%);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      50% { transform: translateX(100%); }
+      100% { transform: translateX(200%); }
+    }
+
+    /* Heart beat */
+    .heart-beat {
+      animation: heartBeat 1.5s ease-in-out infinite;
+    }
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.2); }
+      30% { transform: scale(0.95); }
+      45% { transform: scale(1.15); }
+      60% { transform: scale(1); }
+    }
+
+    @media (max-width: 900px) {
+      .phone-gallery { min-height: 100vh; margin: 20px -20px 40px; }
+      .phone-gallery-inner { height: 480px; }
+      .phone-3d { width: 180px; height: 370px; border-radius: 24px; padding: 6px; }
+      .phone-3d-screen { border-radius: 18px; }
+      .phone-3d-notch { width: 64px; height: 16px; top: 6px; border-radius: 0 0 10px 10px; }
+      .phone-3d-notch::before { width: 4px; height: 4px; }
+      .phone-3d-notch::after { width: 20px; height: 3px; }
+      .phone-3d--center { width: 200px; height: 410px; }
+      .gallery-labels { gap: 40px; }
+      .detail-grid { grid-template-columns: repeat(2, 1fr); }
+      .screen-taobao .tb-item-img { height: 30px; }
+      .screen-pdd .pdd-item-img { height: 30px; }
+      .screen-dy .dy-feed-item { min-height: 70px; }
+    }
+    @media (max-width: 768px) {
+      .phone-gallery { min-height: 80vh; perspective: 800px; }
+      .phone-gallery-inner { height: 400px; }
+      .phone-3d { width: 140px; height: 290px; border-radius: 20px; padding: 5px; }
+      .phone-3d-screen { border-radius: 15px; }
+      .phone-3d-notch { width: 50px; height: 12px; top: 5px; border-radius: 0 0 8px 8px; gap: 4px; }
+      .phone-3d-notch::before { width: 3px; height: 3px; }
+      .phone-3d-notch::after { width: 16px; height: 2px; }
+      .phone-3d--center { width: 160px; height: 330px; }
+      .phone-3d--left { left: 0%; }
+      .phone-3d--right { right: 0%; }
+      .gallery-labels { gap: 24px; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .scroll-hint-bar { font-size: 0.65rem; }
+      .screen-taobao .tb-item-img { height: 22px; }
+      .screen-pdd .pdd-item-img { height: 22px; }
+      .screen-taobao .tb-banner, .screen-pdd .pdd-banner { height: 30px; }
+    }
+    @media (max-width: 480px) {
+      .phone-gallery-inner { height: 340px; }
+      .phone-3d { width: 110px; height: 230px; border-radius: 16px; padding: 4px; }
+      .phone-3d-screen { border-radius: 12px; }
+      .phone-3d-notch { width: 40px; height: 10px; }
+      .phone-3d--center { width: 130px; height: 270px; }
+      .gallery-labels { gap: 12px; }
+      .gallery-label-item .platform-tag { font-size: 0.65rem; padding: 3px 10px; }
+      .gallery-label-item .sub { font-size: 0.6rem; }
+    }
+  </style>
+</head>
+<body class="theme-teal">
+  <nav class="back-nav"><a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> 返回</a></nav>
+
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div>
+      <h1>电商店铺全盘运营</h1>
+      <p class="role">淘宝 · 拼多多 · 抖店 多平台实操</p>
+      <p class="period">2023 — 2026</p>
+    </div>
+  </section>
+
+  <div class="page-content">
+    <div class="scroll-hint-bar" id="scrollHint">滚动浏览  <i class="fas fa-chevron-down"></i></div>
+
+    <div class="phone-gallery" id="phoneGallery">
+      <div class="phone-gallery-inner">
+        <!-- 淘宝 -->
+        <div class="phone-3d phone-3d--left" id="phoneLeft">
+          <div class="phone-3d-notch"></div>
+          <div class="phone-3d-screen">
+            <div class="screen-taobao">
+              <div class="tb-status"><span>9:41</span><span><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></span></div>
+              <div class="tb-header">
+                <div class="tb-search"><i class="fas fa-search"></i> 搜一搜心仪好物</div>
+                <div class="tb-categories">
+                  <div class="tb-cat">推荐</div>
+                  <div class="tb-cat">直播</div>
+                  <div class="tb-cat">服饰</div>
+                  <div class="tb-cat">美妆</div>
+                </div>
+              </div>
+              <div class="tb-banner banner-cycle">限时特惠 · 满减狂欢</div>
+              <div class="tb-grid">
+                <div class="tb-item item-float"><div class="tb-item-img img-shimmer"></div><div class="tb-item-price">&yen;89.9</div><div class="tb-item-title">时尚双肩包</div></div>
+                <div class="tb-item item-float"><div class="tb-item-img img-shimmer"></div><div class="tb-item-price">&yen;129</div><div class="tb-item-title">无线蓝牙耳机</div></div>
+                <div class="tb-item item-float"><div class="tb-item-img img-shimmer"></div><div class="tb-item-price">&yen;59.9</div><div class="tb-item-title">家居收纳盒</div></div>
+                <div class="tb-item item-float"><div class="tb-item-img img-shimmer"></div><div class="tb-item-price">&yen;199</div><div class="tb-item-title">春季新款外套</div></div>
+              </div>
+              <div class="tb-tabbar">
+                <div class="tb-tab active"><i class="fas fa-home"></i>首页</div>
+                <div class="tb-tab"><i class="fas fa-search"></i>发现</div>
+                <div class="tb-tab"><i class="fas fa-shopping-cart"></i>购物车</div>
+                <div class="tb-tab"><i class="fas fa-user"></i>我的</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 拼多多 -->
+        <div class="phone-3d phone-3d--center" id="phoneCenter">
+          <div class="phone-3d-notch"></div>
+          <div class="phone-3d-screen">
+            <div class="screen-pdd">
+              <div class="pdd-status"><span>9:41</span><span><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></span></div>
+              <div class="pdd-header">
+                <div class="pdd-search"><i class="fas fa-search"></i> 搜好货 拼着买更划算</div>
+              </div>
+              <div class="pdd-banner banner-cycle"><i class="fas fa-fire"></i> 限时秒杀 · 万人拼团</div>
+              <div class="pdd-grid">
+                <div class="pdd-item item-float"><span class="pdd-item-badge badge-pulse">拼团</span><div class="pdd-item-img img-shimmer"></div><div class="pdd-item-price">&yen;29.9 <s>&yen;59</s></div><div class="pdd-item-title">晴雨伞两用</div></div>
+                <div class="pdd-item item-float"><span class="pdd-item-badge badge-pulse">新品</span><div class="pdd-item-img img-shimmer"></div><div class="pdd-item-price">&yen;15.9 <s>&yen;39</s></div><div class="pdd-item-title">手机壳</div></div>
+                <div class="pdd-item item-float"><span class="pdd-item-badge badge-pulse">拼团</span><div class="pdd-item-img img-shimmer"></div><div class="pdd-item-price">&yen;49.9 <s>&yen;99</s></div><div class="pdd-item-title">运动水杯</div></div>
+                <div class="pdd-item item-float"><span class="pdd-item-badge badge-pulse">热卖</span><div class="pdd-item-img img-shimmer"></div><div class="pdd-item-price">&yen;9.9 <s>&yen;25</s></div><div class="pdd-item-title">收纳袋</div></div>
+              </div>
+              <div class="pdd-tabbar">
+                <div class="pdd-tab active"><i class="fas fa-home"></i>首页</div>
+                <div class="pdd-tab"><i class="fas fa-th-large"></i>分类</div>
+                <div class="pdd-tab"><i class="fas fa-tags"></i>折扣</div>
+                <div class="pdd-tab"><i class="fas fa-user"></i>我的</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 抖店 -->
+        <div class="phone-3d phone-3d--right" id="phoneRight">
+          <div class="phone-3d-notch"></div>
+          <div class="phone-3d-screen">
+            <div class="screen-dy">
+              <div class="dy-status"><span>9:41</span><span><i class="fas fa-signal"></i> <i class="fas fa-wifi"></i> <i class="fas fa-battery-full"></i></span></div>
+              <div class="dy-header"><span class="dy-logo">抖店</span><div class="dy-actions"><i class="fas fa-search"></i><i class="fas fa-bell"></i></div></div>
+              <div class="dy-stats">
+                <div class="dy-stat"><div class="dy-stat-val stat-count">&yen;1.2w</div><div class="dy-stat-label">今日销售额</div></div>
+                <div class="dy-stat"><div class="dy-stat-val stat-count">328</div><div class="dy-stat-label">今日订单</div></div>
+              </div>
+              <div class="dy-feed">
+                <div class="dy-feed-item feed-slide"><div class="dy-feed-overlay"><span class="price">&yen;79.9</span><br>春季上新</div></div>
+                <div class="dy-feed-item feed-slide"><div class="dy-feed-overlay"><span class="price">&yen;39.9</span><br>爆款推荐</div></div>
+                <div class="dy-feed-item feed-slide"><div class="dy-feed-overlay"><span class="price">&yen;129</span><br>限时特卖</div></div>
+              </div>
+              <div class="dy-tabbar">
+                <div class="dy-tab active"><i class="fas fa-home"></i>首页</div>
+                <div class="dy-tab"><i class="fas fa-chart-bar"></i>数据</div>
+                <div class="dy-tab"><i class="fas fa-cube"></i>商品</div>
+                <div class="dy-tab"><i class="fas fa-user"></i>我的</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Labels -->
+    <div class="gallery-labels" id="galleryLabels">
+      <div class="gallery-label-item" id="labelLeft"><span class="platform-tag"><i class="fas fa-cart-shopping"></i> 淘宝</span><div class="sub">商品上架 · 主图优化 · 推广投放</div></div>
+      <div class="gallery-label-item" id="labelCenter"><span class="platform-tag"><i class="fas fa-users"></i> 拼多多</span><div class="sub">商品上架 · 主图优化 · 推广投放</div></div>
+      <div class="gallery-label-item" id="labelRight"><span class="platform-tag"><i class="fas fa-video"></i> 抖店</span><div class="sub">内容引流 · 商品上架 · 数据运营</div></div>
+    </div>
+
+    <h2>全链路运营</h2>
+    <ul>
+      <li>在淘宝、拼多多、抖店平台独立运营电商店铺，从 0 到 1 完成店铺搭建与运营</li>
+      <li>负责商品上架、主图详情页优化，提升商品转化率</li>
+      <li>制定推广投放策略（阿里妈妈/全站推广等），监控投产比并持续优化</li>
+      <li>日常客服咨询处理、订单发货与售后问题解决，保障店铺评分</li>
+    </ul>
+
+    <h2>运营能力</h2>
+    <ul>
+      <li>熟悉国内电商平台流量分发逻辑与推广工具（阿里妈妈/全站推广等）</li>
+      <li>具备从内容制作到电商转化的完整实操经验，素材剪辑与图片处理能力</li>
+      <li>数据驱动决策：通过生意参谋/多多商情等工具分析流量与转化数据</li>
+      <li>一人独立完成上架 → 推广 → 客服 → 售后的全链路闭环</li>
+    </ul>
+
+    <div class="detail-grid">
+      <div class="detail-card"><i class="fas fa-cube"></i><h3>商品上架</h3><p>完成商品标题、主图、详情页的优化上架，提升商品转化率。</p></div>
+      <div class="detail-card"><i class="fas fa-bullseye"></i><h3>推广投放</h3><p>制定阿里妈妈/全站推广策略，实时监控投放数据，持续优化投产比与转化效果。</p></div>
+      <div class="detail-card"><i class="fas fa-headset"></i><h3>客服售后</h3><p>处理日常客户咨询与售后问题，维护店铺评分与用户满意度，确保店铺稳定运营。</p></div>
+    </div>
+
+    <h2>关键技能</h2>
+    <div class="about-tags" style="margin-top:0">
+      <span class="tag">商品上架</span><span class="tag">视频剪辑</span><span class="tag">推广投放</span><span class="tag">客服售后</span><span class="tag">数据分析</span><span class="tag">主图优化</span><span class="tag">单品运营</span>
+    </div>
+  </div>
+
+  <footer class="footer"><div class="container"><p>&copy; 2026 黄苑. All rights reserved.</p></div></footer>
+
+  <script>
+  (function() {
+    'use strict';
+    const gallery = document.getElementById('phoneGallery');
+    const phoneLeft  = document.getElementById('phoneLeft');
+    const phoneCenter= document.getElementById('phoneCenter');
+    const phoneRight = document.getElementById('phoneRight');
+    const hint      = document.getElementById('scrollHint');
+    const labels    = document.querySelectorAll('.gallery-label-item');
+
+    function updatePhones() {
+      var rect = gallery.getBoundingClientRect();
+      var viewH = window.innerHeight;
+      var rawProgress = 1 - (rect.bottom / (viewH + rect.height));
+      var progress = Math.max(0, Math.min(1, rawProgress));
+
+      if (progress > 0.05) { hint.style.opacity = '0'; } else { hint.style.opacity = '0.6'; }
+
+      var rotY_L = -25 + progress * 25, transY_L = 80 - progress * 80, transX_L = -60 + progress * 60, scaleL = 0.85 + progress * 0.15;
+      phoneLeft.style.transform = 'translate(' + transX_L + 'px,' + transY_L + 'px) rotateY(' + rotY_L + 'deg) scale(' + scaleL + ')';
+
+      var rotX_C = 8 - progress * 10, transY_C = 100 - progress * 100, scaleC = 0.9 + progress * 0.1;
+      phoneCenter.style.transform = 'translate(-50%,' + transY_C + 'px) rotateX(' + rotX_C + 'deg) rotateY(-2deg) scale(' + scaleC + ')';
+
+      var rotY_R = 25 - progress * 25, transY_R = 60 - progress * 60, transX_R = 60 - progress * 60, scaleR = 0.85 + progress * 0.15;
+      phoneRight.style.transform = 'translate(' + transX_R + 'px,' + transY_R + 'px) rotateY(' + rotY_R + 'deg) scale(' + scaleR + ')';
+
+      labels.forEach(function(el, i) { el.classList.toggle('visible', progress > 0.1 + i * 0.12); });
+    }
+
+    window.addEventListener('scroll', updatePhones, { passive: true });
+    window.addEventListener('resize', updatePhones, { passive: true });
+    updatePhones();
+  })();
+
+  // ---- Banner text cycling ----
+  (function() {
+    var tbBanners = [
+      '限时特惠 · 满减狂欢',
+      '新品上市 · 全场包邮',
+      '618 大促 · 低至5折'
+    ];
+    var pddBanners = [
+      '限时秒杀 · 万人拼团',
+      '9.9 包邮 · 每日上新',
+      '品牌清仓 · 低至1折'
+    ];
+
+    var tbEl = document.querySelector('.screen-taobao .tb-banner');
+    var pddEl = document.querySelector('.screen-pdd .pdd-banner');
+    var tbIdx = 0, pddIdx = 0;
+
+    setInterval(function() {
+      tbIdx = (tbIdx + 1) % tbBanners.length;
+      pddIdx = (pddIdx + 1) % pddBanners.length;
+      if (tbEl) {
+        tbEl.style.opacity = '0';
+        setTimeout(function() {
+          tbEl.innerHTML = tbBanners[tbIdx];
+          tbEl.style.opacity = '1';
+        }, 200);
+      }
+      if (pddEl) {
+        pddEl.style.opacity = '0';
+        setTimeout(function() {
+          pddEl.innerHTML = '<i class="fas fa-fire"></i> ' + pddBanners[pddIdx];
+          pddEl.style.opacity = '1';
+        }, 200);
+      }
+    }, 4000);
+  })();
+  </script>
+</body>
+</html>

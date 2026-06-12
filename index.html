@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="黄苑 - 全能复合运营，线上运营+线下执行全链路覆盖">
+  <title>黄苑 — 全能复合运营</title>
+
+  <!-- Google Fonts: Apple-inspired typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Outfit:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="styles/main.css">
+
+  <!-- Theme & Layout styles -->
+  <style>
+    body { transition: background 0.4s var(--ease-out), color 0.4s var(--ease-out); }
+    .section { position: relative; z-index: 1; }
+    .section--alt::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, var(--color-accent-glow), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ---- Theme Switcher ---- */
+    .theme-btn.active { box-shadow: 0 0 8px var(--color-accent-glow); }
+    .theme-btn:hover { transform: scale(1.3); }
+
+    /* ---- Dot Grid ---- */
+    .dot-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    /* ---- ColorBends Canvas ---- */
+    .color-bends {
+      position: absolute; inset: 0; z-index: 1;
+      width: 100%; height: 100%; display: block;
+      pointer-events: none;
+    }
+
+    /* ---- Glass Card ---- */
+    .glass-card {
+      background: rgba(17,17,25,0.5); backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    .glass-card:hover {
+      border-color: var(--color-accent-glow);
+      background: rgba(17,17,25,0.7);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    /* ---- Pill Tag ---- */
+    .pill-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; font-size: 0.6875rem; font-weight: 500;
+      color: var(--color-text-tertiary);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 100px; font-family: var(--font-mono);
+      letter-spacing: 0.02em;
+      transition: all 0.3s var(--ease-out);
+    }
+    .pill-tag:hover {
+      border-color: var(--color-accent-glow);
+      color: var(--color-accent-light);
+      background: var(--color-accent-subtle);
+    }
+
+    /* ---- Stat Cards (Glass override) ---- */
+    .stat-card {
+      background: rgba(17,17,25,0.4) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      border: 1px solid rgba(255,255,255,0.05) !important;
+    }
+    .stat-card:hover {
+      border-color: var(--color-accent-glow) !important;
+      background: rgba(17,17,25,0.65) !important;
+    }
+
+    /* ---- Nav ---- */
+    .nav-logo {
+      font-size: 0.875rem; color: var(--color-accent);
+      opacity: 0.6; transition: opacity 0.3s, transform 0.3s;
+    }
+    .nav-logo:hover { opacity: 1; transform: rotate(180deg); }
+    .hero-content { position: relative; z-index: 3; }
+     .section-sub { transition: opacity 0.6s var(--ease-out); }
+     .hero-scroll-hint { position: relative; z-index: 3; }
+    }
+  </style>
+
+  <!-- Three.js -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+    }
+  }
+  </script>
+</head>
+<body class="theme-teal">
+
+  <!-- Dot Grid Background -->
+  <div class="dot-grid"></div>
+
+  <!-- ============================================
+       Navigation
+  ============================================ -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">◆</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about" class="nav-link">关于</a></li>
+        <li><a href="#experience" class="nav-link">经历</a></li>
+        <li><a href="#projects" class="nav-link">项目</a></li>
+        <li><a href="#skills" class="nav-link">技能</a></li>
+        <li><a href="#contact" class="nav-link">联系</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="菜单">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Scroll progress -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- ============================================
+       Hero
+  ============================================ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="hero-bg-overlay"></div>
+    </div>
+    <canvas id="colorBends" class="color-bends"></canvas>
+    <div class="hero-content">
+      <div class="hero-chip">全能复合运营</div>
+      <h1 class="hero-title">
+        <span class="hero-title-line hero-title-line--sm">你好，我是</span>
+        <span class="hero-title-line hero-title-line--lg">
+          <span class="hero-surname">黄</span><span class="hero-given">苑</span>
+        </span>
+      </h1>
+      <p class="hero-subtitle" id="heroSubtitle"></p>
+      <p class="hero-description">不是单一岗位型选手，是多面手、能落地、上手快。<br>从抖音内容到电商运营到商务交付，一线全流程跟过。</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">查看经验 <i class="fas fa-arrow-down"></i></a>
+        <a href="#contact" class="btn btn-outline">联系我</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>向下滚动</span>
+      <div class="scroll-dot"></div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       About
+  ============================================ -->
+  <section class="section" id="about">
+    <div class="section-badge reveal">关于我</div>
+    <p class="section-sub reveal" style="text-align:center;color:var(--color-text-tertiary);font-size:0.875rem;margin:-40px 0 60px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.8">全链路实操型运营，从内容到商务到交付都跑过一遍</p>
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>从抖音内容运营到电商运营，到商务交付一线全流程都跟过。不是单一岗位型选手，是多面手、能落地、上手快。</p>
+          <p>别人一人只会一个岗位，我能一人包揽运营、剪辑、售后、设备维护。对内包后勤做杂活，对外能出差谈合作——是那种老板招一个能当三个人用的多面手。学习力强、执行力高、踏实稳定，不挑活、能落地、出活快。</p>
+        </div>
+        <div class="about-stats reveal">
+          <div class="stat-card">
+            <span class="stat-number" data-target="3">0</span>
+            <span class="stat-suffix">+</span>
+            <span class="stat-label">年实战经验</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" data-target="3">0</span>
+            <span class="stat-label">行业深耕</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-number" data-target="10">0</span>
+            <span class="stat-suffix">+</span>
+            <span class="stat-label">服务项目</span>
+          </div>
+        </div>
+        <div class="about-tags reveal">
+        <div class="marquee-track" id="marqueeTrack">
+          <div class="marquee-content">
+            <span class="pill-tag">电商全栈运营</span>
+            <span class="pill-tag">抖音账号运营</span>
+            <span class="pill-tag">视频剪辑</span>
+            <span class="pill-tag">图片处理</span>
+            <span class="pill-tag">投放策略优化</span>
+            <span class="pill-tag">内容策划</span>
+            <span class="pill-tag">数据分析</span>
+            <span class="pill-tag">商务谈判</span>
+            <span class="pill-tag">客户对接</span>
+            <span class="pill-tag">项目落地</span>
+            <span class="pill-tag">售后跟进</span>
+            <span class="pill-tag">网页搭建</span>
+            <span class="pill-tag">铝型材DIY</span>
+            <span class="pill-tag">3D打印</span>
+            <span class="pill-tag">激光打标</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       Experience
+  ============================================ -->
+  <section class="section section--alt" id="experience">
+    <div class="section-badge reveal">工作经历</div>
+    <div class="container">
+      <div class="timeline">
+        <a href="experience-ecommerce.html" class="timeline-item reveal">
+          <div class="timeline-marker"></div>
+          <div class="timeline-card glass-card">
+            <div class="timeline-header">
+              <span class="timeline-company">电商运营</span>
+              <span class="timeline-period">2023 — 2026</span>
+            </div>
+            <h3 class="timeline-role">全栈电商运营</h3>
+            <p class="timeline-desc">在淘宝、拼多多平台独立运营电商店铺，负责上架、主图详情优化、推广投放及日常客服发货等全流程。熟悉国内电商平台运营逻辑与推广工具使用，具备从内容到转化的完整实操经验。</p>
+            <span class="timeline-cta">查看详情 <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <a href="experience-pcb.html" class="timeline-item reveal">
+          <div class="timeline-marker"></div>
+          <div class="timeline-card glass-card">
+            <div class="timeline-header">
+              <span class="timeline-company">深圳市跃冠科技有限公司</span>
+              <span class="timeline-period">2021 — 2022</span>
+            </div>
+            <h3 class="timeline-role">商务对接 / 现场工程师</h3>
+            <p class="timeline-desc">独立负责甲方客户的现场业务对接与需求确认，协调生产排期与交付节点。负责货物打包整理，安排配送至甲方现场。遇到货物异常时及时前往现场处理调整，保障交付质量与客户满意度。</p>
+            <span class="timeline-cta">查看详情 <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <a href="experience-douyin.html" class="timeline-item reveal">
+          <div class="timeline-marker"></div>
+          <div class="timeline-card glass-card">
+            <div class="timeline-header">
+              <span class="timeline-company">深圳每日热点网络科技有限公司</span>
+              <span class="timeline-period">2019 — 2020</span>
+            </div>
+            <h3 class="timeline-role">抖音短视频运营</h3>
+            <p class="timeline-desc">独立负责抖音账号日常运营，制定内容发布排期与DOU+投放策略。主要变现方式为引流至私域社群及第三方平台转化，依据完播率、互动率等数据反馈调整内容方向与发布节奏。</p>
+            <span class="timeline-cta">查看详情 <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       Projects
+  ============================================ -->
+  <section class="section" id="projects">
+    <div class="section-badge reveal">实战经验</div>
+    <div class="container">
+      <div class="projects-grid">
+        <a href="project-ecommerce.html" class="project-card reveal" style="cursor:pointer;text-decoration:none;display:block">
+          <div class="project-image" style="background-image: url('assets/project-ecommerce.png');">
+            <div class="project-image-overlay"></div>
+            <div class="project-icon"><i class="fas fa-store"></i></div>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">电商店铺全盘运营</h3>
+            <p class="project-desc">从 0 到 1 独立操盘电商店铺，上架、主图详情优化到售后全链路闭环。</p>
+            <div class="project-tags">
+              <span>商品上架</span>
+              <span>视频剪辑</span>
+              <span>推广投放</span>
+              <span>客服售后</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="project-douyin.html" class="project-card reveal" style="cursor:pointer;text-decoration:none;display:block">
+          <div class="project-image" style="background-image: url('assets/project-douyin.png');">
+            <div class="project-image-overlay"></div>
+            <div class="project-icon"><i class="fas fa-video"></i></div>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">抖音账号内容运营</h3>
+            <p class="project-desc">素材剪辑、发布排期与DOU+投放策略制定，依据数据反向优化选题方向。</p>
+            <div class="project-tags">
+              <span>视频剪辑</span>
+              <span>内容策划</span>
+              <span>DOU+投放</span>
+              <span>数据分析</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="project-pcb.html" class="project-card reveal" style="cursor:pointer;text-decoration:none;display:block">
+          <div class="project-image" style="background-image: url('assets/project-pcb.png');">
+            <div class="project-image-overlay"></div>
+            <div class="project-icon"><i class="fas fa-handshake"></i></div>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">PCB 方案商务交付</h3>
+            <p class="project-desc">出差对接甲方，方案沟通、商务谈判、现场交付到售后跟进全流程服务。</p>
+            <div class="project-tags">
+              <span>商务谈判</span>
+              <span>客户对接</span>
+              <span>项目落地</span>
+              <span>售后跟进</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="project-practice.html" class="project-card reveal" style="cursor:pointer;text-decoration:none;display:block">
+          <div class="project-image" style="background-image: url('assets/project-support.png');">
+            <div class="project-image-overlay"></div>
+            <div class="project-icon"><i class="fas fa-wrench"></i></div>
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">多元实践</h3>
+            <p class="project-desc">铝型材DIY、电脑维护、激光打标、3D打印均有涉猎，日常使用 OpenClaw、Hermes Agent 等工具。</p>
+            <div class="project-tags">
+              <span>铝型材DIY</span>
+              <span>激光打标</span>
+              <span>3D打印</span>
+              <span>网页搭建</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       Skills
+  ============================================ -->
+  <section class="section section--alt" id="skills">
+    <div class="section-badge reveal">技能专长</div>
+    <div class="container">
+      <div class="skills-grid">
+        <div class="skill-group reveal">
+            <h3 class="skill-group-title">
+              <i class="fas fa-chart-line"></i>
+              运营能力
+            </h3>
+            <div class="skill-items">
+              <div class="skill-item">
+                <i class="fas fa-store"></i>
+                <span class="skill-info">电商全栈运营</span>
+              </div>
+              <div class="skill-item">
+                <i class="fas fa-video"></i>
+                <span class="skill-info">抖音账号运营</span>
+              </div>
+              <div class="skill-item">
+                <i class="fas fa-chart-simple"></i>
+                <span class="skill-info">投放策略优化</span>
+              </div>
+              <div class="skill-item">
+                <i class="fas fa-pen-clip"></i>
+                <span class="skill-info">内容策划</span>
+              </div>
+              <div class="skill-item">
+                <i class="fas fa-magnifying-glass-chart"></i>
+                <span class="skill-info">数据分析</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-group reveal">
+            <h3 class="skill-group-title">
+              <i class="fas fa-pen-fancy"></i>
+              内容制作
+            </h3>
+            <div class="skill-items">
+              <div class="skill-item">
+                <i class="fas fa-scissors"></i>
+                <span class="skill-info">视频剪辑</span>
+              </div>
+              <div class="skill-item">
+                <i class="fas fa-wand-magic-sparkles"></i>
+                <span class="skill-info">图片处理</span>
+              </div>
+              <div class="skill-item">
+                <i class="fas fa-layer-group"></i>
+                <span class="skill-info">素材整理</span>
+              </div>
+              <div class="skill-item">
+                <i class="fas fa-camera"></i>
+                <span class="skill-info">产品拍摄</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-group reveal">
+            <h3 class="skill-group-title">
+              <i class="fas fa-cogs"></i>
+              综合能力
+            </h3>
+            <div class="skill-items">
+              <div class="skill-item">
+                <i class="fas fa-handshake"></i>
+                <span class="skill-info">商务谈判 / 客户对接</span>
+              </div>
+              <div class="skill-item">
+                <i class="fas fa-diagram-project"></i>
+                <span class="skill-info">项目落地 / 售后跟进</span>
+              </div>
+              <div class="skill-item">
+                <i class="fas fa-toolbox"></i>
+                <span class="skill-info">后勤支持 / 网页搭建</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="skill-group reveal">
+            <h3 class="skill-group-title">
+              <i class="fas fa-flask"></i>
+              动手实践
+            </h3>
+            <div class="skill-items">
+              <div class="skill-item">
+                <i class="fas fa-tools"></i>
+                <span class="skill-info">设备维护 / 铝型材DIY</span>
+              </div>
+              <div class="skill-item">
+                <i class="fas fa-laptop"></i>
+                <span class="skill-info">电脑维护 / 激光打标</span>
+              </div>
+              <div class="skill-item">
+                <i class="fas fa-cube"></i>
+                <span class="skill-info">3D打印</span>
+              </div>
+              <div class="skill-item">
+                <i class="fas fa-robot"></i>
+                <span class="skill-info">OpenClaw / Hermes Agent</span>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       Contact
+  ============================================ -->
+  <section class="section contact-section" id="contact">
+    <div class="section-badge reveal">联系我</div>
+    <div class="container">
+      <div class="contact-content reveal">
+        <p class="contact-headline">如果您需要一个上手就能干活的复合型人才，<br>欢迎随时联系我</p>
+        <div class="contact-list">
+          <a href="mailto:shinw420@Gmail.com" class="contact-item">
+            <span class="contact-item-icon"><i class="fas fa-envelope"></i></span>
+            <span class="contact-item-label">邮箱</span>
+            <span class="contact-item-value">shinw420@Gmail.com</span>
+          </a>
+          <a href="tel:+8619120202028" class="contact-item">
+            <span class="contact-item-icon"><i class="fas fa-phone"></i></span>
+            <span class="contact-item-label">电话</span>
+            <span class="contact-item-value">191 2020 2028</span>
+          </a>
+          <div class="contact-item">
+            <span class="contact-item-icon"><i class="fab fa-weixin"></i></span>
+            <span class="contact-item-label">微信</span>
+            <span class="contact-item-value">S-CCCSY</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="backToTop" aria-label="返回顶部">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- ============================================
+       Footer
+  ============================================ -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 黄苑. All rights reserved.</p>
+      <div class="theme-switcher" style="margin-top:16px;display:flex;gap:8px;justify-content:center">
+        <button class="theme-btn teal active" data-theme="teal" title="海洋青蓝" onclick="switchTheme('teal')" style="width:10px;height:10px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);background:#06b6d4;cursor:pointer;padding:0;transition:all 0.3s"></button>
+        <button class="theme-btn purple" data-theme="purple" title="紫色星云" onclick="switchTheme('purple')" style="width:10px;height:10px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);background:#a855f7;cursor:pointer;padding:0;transition:all 0.3s"></button>
+        <button class="theme-btn slate" data-theme="slate" title="极简灰白" onclick="switchTheme('slate')" style="width:10px;height:10px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);background:#e4e4e7;cursor:pointer;padding:0;transition:all 0.3s"></button>
+      </div>
+    </div>
+  </footer>
+
+  <script>if(location.hash) history.replaceState(null,'',location.pathname+location.search);</script>
+  <script src="scripts/main.js"></script>
+
+  <!-- Theme switcher -->
+  <script>
+    function switchTheme(name) {
+      document.body.className = 'theme-' + name;
+      document.querySelectorAll('.theme-btn').forEach(function(b) {
+        b.classList.toggle('active', b.dataset.theme === name);
+      });
+      try { localStorage.setItem('resume-theme', name); } catch(e) {}
+      // Update color bends
+      if (window.colorBends) window.colorBends.updateColor(name);
+    }
+    // Restore saved theme
+    try {
+      var saved = localStorage.getItem('resume-theme');
+      if (saved) switchTheme(saved);
+      else switchTheme('teal');
+    } catch(e) {}
+  </script>
+
+  <!-- ColorBends - Animated flowing gradient background -->
+  <script>
+  (function() {
+    var canvas = document.getElementById('colorBends');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W, H, time = 0;
+
+    // Theme color mappings
+    var themeColors = {
+      purple: [
+        { r: 130, g: 70, b: 220 },
+        { r: 90, g: 50, b: 200 },
+        { r: 168, g: 85, b: 247 },
+        { r: 60, g: 30, b: 150 }
+      ],
+      teal: [
+        { r: 6, g: 182, b: 212 },
+        { r: 20, g: 150, b: 200 },
+        { r: 8, g: 145, b: 180 },
+        { r: 15, g: 100, b: 160 }
+      ],
+      slate: [
+        { r: 180, g: 180, b: 190 },
+        { r: 140, g: 140, b: 150 },
+        { r: 200, g: 200, b: 210 },
+        { r: 100, g: 100, b: 115 }
+      ]
+    };
+
+    var currentTheme = 'teal';
+    var colors = themeColors.teal;
+
+    function resize() {
+      W = canvas.width = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+    }
+
+    window.colorBends = {
+      updateColor: function(theme) {
+        currentTheme = theme;
+        colors = themeColors[theme] || themeColors.purple;
+      }
+    };
+
+    // Simple 1D noise
+    function noise(x) {
+      return Math.sin(x * 1.7) * 0.5 + Math.sin(x * 3.2) * 0.3 + Math.sin(x * 7.1) * 0.2;
+    }
+
+    function draw() {
+      time += 0.008;
+      ctx.clearRect(0, 0, W, H);
+
+      var bands = 5;
+      var bandH = H / bands;
+
+      for (var b = 0; b < bands; b++) {
+        var baseY = b * bandH;
+        var col = colors[b % colors.length];
+        var nextCol = colors[(b + 1) % colors.length];
+
+        for (var x = 0; x < W; x += 2) {
+          var n = noise(x * 0.004 + time) * 0.6 +
+                  noise(x * 0.008 + time * 0.7 + 100) * 0.3 +
+                  noise(x * 0.015 + time * 0.5 + 200) * 0.1;
+
+          var yOffset = n * bandH * 0.5;
+          var y1 = baseY + yOffset;
+          var y2 = baseY + bandH + noise(x * 0.004 + time * 0.8 + 50) * bandH * 0.4;
+
+          // Interpolate color
+          var t = (b % colors.length) / Math.max(1, colors.length - 1);
+          var r = col.r + (nextCol.r - col.r) * 0.3;
+          var g = col.g + (nextCol.g - col.g) * 0.3;
+          var b2 = col.b + (nextCol.b - col.b) * 0.3;
+
+          var alpha = 0.15 + 0.1 * noise(x * 0.005 + time * 0.5 + b * 10);
+
+          ctx.fillStyle = 'rgba(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b2) + ',' + alpha + ')';
+          ctx.fillRect(x, y1, 3, Math.max(1, y2 - y1));
+        }
+      }
+
+      // Soft overlay blend
+      var grad = ctx.createRadialGradient(W*0.5, H*0.4, 0, W*0.5, H*0.4, W*0.7);
+      grad.addColorStop(0, 'rgba(255,255,255,0.02)');
+      grad.addColorStop(0.5, 'rgba(255,255,255,0.005)');
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Delay start slightly for layout to settle
+    setTimeout(draw, 100);
+  })();
+  </script>
+</body>
+</html>
