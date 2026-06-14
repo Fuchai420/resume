@@ -61,11 +61,7 @@
         const delay = fullText[charIndex - 1] === '\u00B7' ? 300 : 55 + Math.random() * 40;
         setTimeout(typeChar, delay);
       } else {
-        subtitleEl.classList.add('typing-done');
-        // Keep cursor blinking for a bit then remove
-        setTimeout(() => {
-          subtitleEl.classList.remove('typing-done');
-        }, 4000);
+        subtitleEl.classList.add('cursor-hidden');
       }
     }
 
